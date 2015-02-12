@@ -35,7 +35,6 @@ void PushButton::init(uint8_t pin, uint8_t options){
 	// Default configuration for Debounced pin
 	bouncer = Bounce();
 	bouncer.attach(pin);
-	bouncer.interval(5);
 }
 
 void PushButton::configureButton(PushButtonConfigurationCallback configurationCallback){
