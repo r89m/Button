@@ -1,1 +1,2 @@
 PushButton	KEYWORD1
+configureButton	KEYWORD2
