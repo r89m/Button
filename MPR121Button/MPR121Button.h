@@ -24,6 +24,7 @@ class MPR121Button : public Button {
 	
 	public:
 		MPR121Button(Adafruit_MPR121&, uint8_t);	
+		using Button::update;					// 'Unhide' the update method of the parent class Button
 		void update(uint16_t);
 };
 
