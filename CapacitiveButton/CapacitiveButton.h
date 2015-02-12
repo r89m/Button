@@ -19,7 +19,7 @@ class CapacitiveButton : public Button {
 	
 	private:
 	CapacitiveSensor capSense = CapacitiveSensor(NOT_A_PIN, NOT_A_PIN);	// Called with pins set to NOT_A_PIN as there is not default constructor
-	long _threshold = 0;
+	long _threshold = 1000;
 	long _number_of_samples = 30;
 	
 	protected:
