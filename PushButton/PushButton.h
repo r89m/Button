@@ -10,7 +10,7 @@
 #define PUSHBUTTON_H_
 
 #include <Bounce2.h>
-#include "Button.h";
+#include "Button.h"
 
 #define PRESSED_WHEN_HIGH B1
 #define PRESSED_WHEN_LOW B10

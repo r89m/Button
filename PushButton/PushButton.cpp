@@ -9,7 +9,7 @@
 
 PushButton::PushButton(uint8_t pin){
 	
-	init(pin, true);
+	init(pin, PRESSED_WHEN_HIGH);
 }
 
 PushButton::PushButton(uint8_t pin, uint8_t options){
@@ -32,6 +32,7 @@ void PushButton::init(uint8_t pin, uint8_t options){
 		_button_pressed_value = HIGH;
 	}
 
+	// Default configuration for Debounced pin
 	bouncer = Bounce();
 	bouncer.attach(pin);
 	bouncer.interval(5);
