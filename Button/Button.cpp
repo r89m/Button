@@ -6,6 +6,7 @@
  */ 
 
 #include "Button.h"
+#include "ButtonEventCallback.h"
 
 void Button::_button_pressed(){
 	
@@ -20,10 +21,9 @@ void Button::_button_pressed(){
 		_on_press_callback(*this);
 	}
 	
-	// Reset all repeating hold callbacks (no need to reset fire-once hold callbacks)
-	for(uint8_t i = 0; i < _on_hold_repeat_callbacks_count; i++){
-		_on_hold_repeat_next_execution[i] = _on_hold_repeat_delay[i];
-		_on_hold_repeat_execution_count[i] = 0;
+	// Reset all callbacks
+	for(uint8_t i = 0; i < MAX_CALLBACKS_PER_BUTTON; i++){
+		_eventCallbacks[i]->reset();
 	}	
 }
 
@@ -32,17 +32,22 @@ void Button::_button_released(){
 	// Set the button pressed state to false
 	_is_pressed = false;
 	
+	_execute_callbacks();
+	
+	/*
+	
 	Serial.println("Do release callback");
 	delay(500);
 	
 	// Fire the onRelease callback if one has been specified
-	if(_on_release_callback){
-		_on_release_callback(*this, _button_time_elapsed());
-	}
+	//if(_on_release_callback){
+		//_on_release_callback(*this, _button_time_elapsed());
+	//}
 	
 	Serial.println("Did release callback okay");
 	delay(500);
 	
+	// Iterate 
 	// Search for the most appropriate onRelease callback with wait - only do this if we have some release callbacks registered though
 	if(_on_release_callbacks_count > 0){
 		// Iterate from the end of the array, as we want the first callback who's "wait" has elapsed
@@ -52,10 +57,13 @@ void Button::_button_released(){
 		  }
 		}
 	}
+	*/
 }
 
 void Button::_button_held(){
 	
+	_execute_callbacks();
+	/*
 	// Search for any appropriate onHold callbacks - non repeating first
 	for(uint8_t i = 0; i < _on_hold_callbacks_count; i++){
 		performHoldCallbackIfTime(i, *this, _button_time_elapsed());
@@ -64,6 +72,18 @@ void Button::_button_held(){
 	for(uint8_t i = 0; i < _on_hold_repeat_callbacks_count; i++){
 		performHoldRepeatCallbackIfTime(i, *this, _button_time_elapsed());
 	}
+	*/
+}
+
+void Button::_execute_callbacks(){
+	
+	uint16_t button_time_elapsed = _button_time_elapsed();
+	
+	// Iterate over all callbacks
+	for(uint8_t i = 0; i < MAX_CALLBACKS_PER_BUTTON - 1; i++){
+		_eventCallbacks[i]->executeCallbackIfTime(button_time_elapsed, *this);
+	}
+	
 }
 
 uint16_t Button::_button_time_elapsed(){
@@ -71,6 +91,7 @@ uint16_t Button::_button_time_elapsed(){
 	return millis() - _button_pressed_timestamp;
 }
 
+/*
 boolean Button::performReleaseCallbackIfTime(uint8_t index, Button& btn, uint16_t elapsed_time){
 	
 	// Get the necessary information
@@ -130,6 +151,7 @@ boolean Button::performHoldRepeatCallbackIfTime(uint8_t index, Button& btn, uint
 	// Otherwise, return false
 	return false;
 }
+*/
 
 
 void Button::update(){
@@ -137,10 +159,12 @@ void Button::update(){
 	// Record the previous and new state of the button
 	boolean _previous_button_state = isPressed();
 	boolean _new_button_state = _update_button_state();
-  
+	
 	// Record the new state of the button
 	_is_pressed = _new_button_state;
 	
+	//Serial.println("Button Update");
+		
 	// If the state of the button has changed
 	if(_previous_button_state != _new_button_state){
 		// If the button is now pressed
@@ -161,21 +185,38 @@ void Button::onPress(ButtonOnPressCallback callback){
 	_on_press_callback = callback;
 }
 
-void Button::onRelease(ButtonOnEventCallback callback){
+CallbackAttachedResponse Button::onRelease(ButtonOnEventCallback callback){
 	
-	_on_release_callback = callback;
+	return onRelease(0, callback);
 }
 
-void Button::onRelease(uint16_t wait, ButtonOnEventCallback callback){
+CallbackAttachedResponse Button::onRelease(uint16_t wait, ButtonOnEventCallback callback){
 	
-	onRelease(wait, -1, callback);
+	return onRelease(wait, -1, callback);
 }
 
-void Button::onRelease(uint16_t wait, uint16_t max_wait, ButtonOnEventCallback callback){
+CallbackAttachedResponse Button::onRelease(uint16_t wait, uint16_t max_wait, ButtonOnEventCallback callback){
 	
-	uint8_t next_index = _on_release_callbacks_count + 1;
+	for(uint8_t i = 0; i < MAX_CALLBACKS_PER_BUTTON - 1; i++){
+		// If this callback handler has not be initialised, we can use it
+		if(_eventCallbacks[i]->getType() == evtUninitialised){
+			_eventCallbacks[i]->setType(evtRelease);
+			_eventCallbacks[i]->setDelay(wait);
+			_eventCallbacks[i]->setMaxDelay(max_wait);
+			_eventCallbacks[i]->setCallback(callback);
+			
+			// Now that we're done, let the user know
+			return attSuccessful;
+		}
+	}
+	
+	// If we get this far, there was no more space to add a handler
+	return attNoMoreRoom;
+	
+	//uint8_t next_index = _on_release_callbacks_count + 1;
 	
 	/* Resize all the necessary arrays - callbacks, waits and max waits */
+	/*
 	// Callbacks
 	_on_release_callbacks = (ButtonOnEventCallback**) realloc(_on_release_callbacks, next_index * sizeof(ButtonOnEventCallback*));
 	// Waits
@@ -190,13 +231,29 @@ void Button::onRelease(uint16_t wait, uint16_t max_wait, ButtonOnEventCallback c
 	
 	// Increment callback counter
 	_on_release_callbacks_count++;
+	*/
 }
 
-void Button::onHold(uint16_t duration, ButtonOnEventCallback callback){
+CallbackAttachedResponse Button::onHold(uint16_t duration, ButtonOnEventCallback callback){
 	
-	uint8_t next_index = _on_hold_callbacks_count + 1;
+	for(uint8_t i = 0; i < MAX_CALLBACKS_PER_BUTTON - 1; i++){
+		// If this callback handler has not be initialised, we can use it
+		if(_eventCallbacks[i]->getType() == evtUninitialised){
+			_eventCallbacks[i]->setType(evtHold);
+			_eventCallbacks[i]->setDelay(duration);
+			_eventCallbacks[i]->setCallback(callback);
+			
+			// Now that we're done, let the user know
+			return attSuccessful;
+		}
+	}
+	
+	// If we get this far, there was no more space to add a handler
+	return attNoMoreRoom;
+	//uint8_t next_index = _on_hold_callbacks_count + 1;
 	
 	/* Resize all the necessary arrays - callbacks and durations */
+	/*
 	// Callbacks
 	_on_hold_callbacks = (ButtonOnEventCallback**) realloc(_on_hold_callbacks, next_index * sizeof(ButtonOnEventCallback*));
 	// Delays
@@ -208,13 +265,30 @@ void Button::onHold(uint16_t duration, ButtonOnEventCallback callback){
 	
 	// Increment callback counter
 	_on_hold_callbacks_count++;
+	*/
 }
 
-void Button::onHoldRepeat(uint16_t duration, uint16_t repeat_every, ButtonOnEventRepeatCallback callback){
+CallbackAttachedResponse Button::onHoldRepeat(uint16_t duration, uint16_t repeat_every, ButtonOnEventRepeatCallback callback){
  
-	uint8_t next_index = _on_hold_repeat_callbacks_count + 1;
+	for(uint8_t i = 0; i < MAX_CALLBACKS_PER_BUTTON - 1; i++){
+		// If this callback handler has not be initialised, we can use it
+		if(_eventCallbacks[i]->getType() == evtUninitialised){
+			_eventCallbacks[i]->setType(evtHoldRepeat);
+			_eventCallbacks[i]->setDelay(duration);
+			_eventCallbacks[i]->setRepetitionPeriod(repeat_every);
+			_eventCallbacks[i]->setRepeatingCallback(callback);
+			
+			// Now that we're done, let the user know
+			return attSuccessful;
+		}
+	}
+	
+	// If we get this far, there was no more space to add a handler
+	return attNoMoreRoom;
+	// uint8_t next_index = _on_hold_repeat_callbacks_count + 1;
 	
 	/* Resize all the necessary arrays - callbacks, durations, repeat delays and next execution times */
+	/*
 	// Callbacks
 	_on_hold_repeat_callbacks = (ButtonOnEventRepeatCallback**) realloc(_on_hold_repeat_callbacks, next_index * sizeof(ButtonOnEventRepeatCallback*));
 	// Durations
@@ -232,6 +306,7 @@ void Button::onHoldRepeat(uint16_t duration, uint16_t repeat_every, ButtonOnEven
 	
 	// Increment callback counter
 	_on_hold_repeat_callbacks_count++;
+	*/
 }
 
 
