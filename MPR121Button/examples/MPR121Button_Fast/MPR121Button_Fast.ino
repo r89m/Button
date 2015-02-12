@@ -11,7 +11,7 @@
 // Create an instance of Adafruit_MPR121 to communicate with your IC via i2C
 Adafruit_MPR121 touchSensor = Adafruit_MPR121();
 
-// Create a couple of instances of MPRButton reading electrodes 1, 2 and 3
+// Create a few instances of MPRButton reading electrodes 1, 2 and 3
 MPR121Button button1 = MPR121Button(touchSensor, 1);
 MPR121Button button2 = MPR121Button(touchSensor, 2);
 MPR121Button button3 = MPR121Button(touchSensor, 3);
