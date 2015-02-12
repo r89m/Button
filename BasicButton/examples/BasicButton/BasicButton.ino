@@ -22,7 +22,7 @@ void setup(){
 	button.onPress(onButtonPressed);
         // Once the button has been held for 1 second (1000ms) call onButtonHeld. Call it again every 0.5s (500ms) until it is let go
 	button.onHoldRepeat(1000, 500, onButtonHeld);
-        // When the button is release, call onButtonReleased
+        // When the button is released, call onButtonReleased
 	button.onRelease(onButtonReleased);
 }
 

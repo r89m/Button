@@ -14,18 +14,29 @@ void setup(){
 	
         // Open up the serial port so that we can write to it
 	Serial.begin(9600);
+
+        // Configure the button as you'd like - not necessary if you're happy with the defaults
+        button1.configureButton(configurePushButton);
 	
         // When the button is first pressed, call the function onButtonPressed (further down the page)
 	button.onPress(onButtonPressed);
         // Once the button has been held for 1 second (1000ms) call onButtonHeld. Call it again every 0.5s (500ms) until it is let go
 	button.onHoldRepeat(1000, 500, onButtonHeld);
-        // When the button is release, call onButtonReleased
+        // When the button is released, call onButtonReleased
 	button.onRelease(onButtonReleased);
 }
 
 void loop(){
 	// Check the state of the button
 	button.update();
+}
+
+// Use this function to configure the internal Bounce object to suit you. See the documentation at: https://github.com/thomasfredericks/Bounce2/wiki
+// This function can be left empty if the defaults are acceptable
+void configurePushButton(Bounce& bouncedButton){
+    
+        // Set the debounce interval to 15ms - default is 10ms
+	bouncedButton.interval(15)
 }
 
 // btn is a reference to the button that fired the event. That means you can use the same event handler for many buttons
