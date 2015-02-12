@@ -12,9 +12,9 @@
 #include <Bounce2.h>
 #include "Button.h"
 
-#define PRESSED_WHEN_HIGH B1
-#define PRESSED_WHEN_LOW B10
-#define ENABLE_INTERNAL_PULLUP B100
+#define PRESSED_WHEN_HIGH B0
+#define PRESSED_WHEN_LOW B1
+#define ENABLE_INTERNAL_PULLUP B10
 
 // Define button configuration callback
 typedef void (*PushButtonConfigurationCallback)(Bounce&);
