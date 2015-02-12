@@ -7,6 +7,7 @@
  */ 
 
 #include <Button.h>
+#include <ButtonEventCallback.h>
 #include <BasicButton.h>
 
 // Create an instance of BasicButton reading digital pin 5
