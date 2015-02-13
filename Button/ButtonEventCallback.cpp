@@ -51,7 +51,7 @@ void ButtonEventCallback::executeCallbackIfTime(uint16_t elapsedTime, Button& bt
 			if(elapsedTime > _next_execution_time && elapsedTime < _max_delay && _execution_count == 1){
 				if(_callback){
 					_callback(btn, elapsedTime);
-			}
+				}
 			_execution_count++;
 			}
 		} else if (_type == evtHold){
