@@ -21,7 +21,6 @@
 
 // Forward reference
 class Button;
-class ButtonEventCallback;
 
 // Define callback types
 typedef void (*ButtonOnPressCallback)(Button&);
@@ -31,6 +30,8 @@ typedef void (*ButtonOnEventRepeatCallback)(Button&, uint16_t, uint16_t);
 typedef enum {evtUninitialised, evtRelease, evtHold, evtHoldRepeat} EventType;
 typedef enum {attSuccessful, attNoMoreRoom} CallbackAttachedResponse;
 
+#include "ButtonEventCallback.h"
+
 class Button{
 	
 	private:
@@ -38,13 +39,14 @@ class Button{
 		boolean _is_pressed;											// Whether or not the button is currently pressed
 		
 		ButtonOnPressCallback _on_press_callback;						// A callback for when the button is initially pressed
-		ButtonEventCallback* _eventCallbacks[MAX_CALLBACKS_PER_BUTTON];	// An array of callbacks for Release, Hold and HoldRepeat events
+		ButtonEventCallback _eventCallbacks[MAX_CALLBACKS_PER_BUTTON];	// An array of callbacks for Release, Hold and HoldRepeat events
 		
 		void _button_pressed();
 		void _button_released();
 		void _button_held();
 		uint16_t _button_time_elapsed();
 		void _execute_callbacks();
+		ButtonEventCallback* getNextAvailableCallback();
 		
 	protected:
 		virtual boolean _update_button_state()=0;
