@@ -1,5 +1,5 @@
 /*
- * MPR121Button example. This shows a basic example of how to receive events from electrodes on an MPR121 Capactive Touch IC
+ * MPR121Button_Fast example. This shows a basic example of how to receive events from electrodes on an MPR121 Capactive Touch IC, but using a local variable to reduce the amount of requests over the i2c bus
  */ 
 
 #include <Button.h>
@@ -7,6 +7,9 @@
 #include <MPR121Button.h>
 #include <Adafruit_MPR121.h>    // https://github.com/adafruit/Adafruit_MPR121_Library
 #include <Wire.h>
+
+// Attach the MPR121's IRQ pin to digital pin 4
+const int PIN_TOUCH_IRQ = 4;
 
 // Create an instance of Adafruit_MPR121 to communicate with your IC via i2C
 Adafruit_MPR121 touchSensor = Adafruit_MPR121();
@@ -38,10 +41,15 @@ void setup(){
 }
 
 void loop(){
-	// Check the state of the button - this is not necessarily the most efficient way of doing this. For a better way see the example MPR121Button_Fast
-	button1.update();
-	button2.update();
-	button3.update();
+	// Check the state of the button
+        // Check the IRQ line - if it is LOW that Touch Sensor IC has new data for us
+        if(digitalRead(PIN_TOUCH_IRQ) == LOW){
+                // Get the latest touch readings from the sensor. Do this here means we only call .touched() once instead of 3 times
+                int latestTouchReading = touchSensor.touched();
+        	button1.update(latestTouchReading);
+	        button2.update(latestTouchReading);
+	        button3.update(latestTouchReading);
+        }
 }
 
 // btn is a reference to the button that fired the event. That means you can use the same event handler for many buttons
