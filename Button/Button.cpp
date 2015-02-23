@@ -162,6 +162,10 @@ ButtonEventCallback* Button::getNextAvailableCallback(){
 	return NULL;	
 }
 
+boolean Button::is(Button &btn){
+	
+	return (this == &btn);
+}
 
 boolean Button::isPressed(){
 	

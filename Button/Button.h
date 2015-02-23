@@ -60,6 +60,7 @@ class Button{
 		CallbackAttachedResponse onHoldRepeat(uint16_t, uint16_t, ButtonOnEventRepeatCallback);
 		
 		void update();
+		boolean is(Button&);
 		boolean isPressed();
 };
   
