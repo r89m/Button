@@ -8,6 +8,11 @@
  #include "Button.h"
  #include "ButtonEventCallback.h"
 
+// Empty default constructor
+ButtonEventCallback::ButtonEventCallback(){
+	
+}
+
 EventType ButtonEventCallback::getType(){
 	
 	return _type;
