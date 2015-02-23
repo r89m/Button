@@ -1,5 +1,5 @@
 /*
- * CapacitiveButton.cpp
+ * MPR121Button.cpp
  *
  * Created: 18/11/2014 19:33:23
  *  Author: Richard
