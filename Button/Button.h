@@ -45,13 +45,14 @@ class Button{
 		void _button_released();
 		void _button_held();
 		uint16_t _button_time_elapsed();
-		void _execute_callbacks();
+		void _execute_callbacks(boolean);
 		ButtonEventCallback* getNextAvailableCallback();
 		
 	protected:
 		virtual boolean _update_button_state()=0;
 	
 	public:
+		Button();
 		void onPress(ButtonOnPressCallback);
 		CallbackAttachedResponse onRelease(ButtonOnEventCallback);
 		CallbackAttachedResponse onRelease(uint16_t, ButtonOnEventCallback);
@@ -59,7 +60,7 @@ class Button{
 		CallbackAttachedResponse onHold(uint16_t, ButtonOnEventCallback);
 		CallbackAttachedResponse onHoldRepeat(uint16_t, uint16_t, ButtonOnEventRepeatCallback);
 		
-		void update();
+		boolean update();
 		boolean is(Button&);
 		boolean isPressed();
 };
