@@ -9,7 +9,7 @@
 
 PushButton::PushButton(uint8_t pin){
 	
-	init(pin, PRESSED_WHEN_HIGH);
+	init(pin, ENABLE_INTERNAL_PULLUP);
 }
 
 PushButton::PushButton(uint8_t pin, uint8_t options){

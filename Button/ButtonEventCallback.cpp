@@ -11,6 +11,14 @@
 // Empty default constructor
 ButtonEventCallback::ButtonEventCallback(){
 	
+	// Initialise variables
+	_type = evtUninitialised;
+	_delay = 0;
+	_max_delay = 0;
+	_repeat_period = 0;
+	_execution_count = 1;
+	
+	_next_execution_time = 0;
 }
 
 EventType ButtonEventCallback::getType(){
@@ -48,11 +56,11 @@ void ButtonEventCallback::setRepeatingCallback(ButtonOnEventRepeatCallback callb
 	_callback_repeating = callback_repeating;
 }
 
-void ButtonEventCallback::executeCallbackIfTime(uint16_t elapsedTime, Button& btn){
+void ButtonEventCallback::executeCallbackIfTime(uint16_t elapsedTime, boolean release_event, Button& btn){
 	
 	// Only process callbacks that have been initialised
 	if(_type != evtUninitialised){
-		if (_type == evtRelease){
+		if (release_event && _type == evtRelease){ // Only check release callbacks at the right time.
 			if(elapsedTime > _next_execution_time && elapsedTime < _max_delay && _execution_count == 1){
 				if(_callback){
 					_callback(btn, elapsedTime);

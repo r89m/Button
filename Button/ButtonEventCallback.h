@@ -9,16 +9,23 @@
 #ifndef BUTTONEVENTCALLBACK_H
 #define BUTTONEVENTCALLBACK_H
 
+#include <inttypes.h>
+#if (ARDUINO >= 100)
+#include <Arduino.h>
+#else
+#include <WProgram.h>
+#endif
+
 #include <Button.h>
 
 class ButtonEventCallback{
 	
 	private:
-		EventType _type = evtUninitialised;
-		uint16_t _delay = 0;
-		uint16_t _max_delay = 0;
-		uint16_t _repeat_period = 0;
-		uint8_t _execution_count = 1;
+		EventType _type;
+		uint16_t _delay;
+		uint16_t _max_delay;
+		uint16_t _repeat_period;
+		uint8_t _execution_count;
 	
 		void calculateNextExecutionTime();
 	
@@ -27,7 +34,7 @@ class ButtonEventCallback{
 		ButtonOnEventRepeatCallback _callback_repeating;
 	
 		// Keep track of when the callback should be executed
-		uint16_t _next_execution_time = 0;
+		uint16_t _next_execution_time;
 	
 	public:
 		ButtonEventCallback();
@@ -41,7 +48,7 @@ class ButtonEventCallback{
 		void setCallback(ButtonOnEventCallback);
 		void setRepeatingCallback(ButtonOnEventRepeatCallback);
 		
-		void executeCallbackIfTime(uint16_t, Button&);
+		void executeCallbackIfTime(uint16_t, boolean, Button&);
 		void reset();
 	
 };
