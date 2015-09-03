@@ -1,0 +1,9 @@
+{
+  "name": "Buttons",
+  "keywords": "button, touch button, capacitive button, pushbutton",
+  "description": "Handle different types of buttons and button events easily",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shaggythesheep/arduino-button"
+  }
+}
