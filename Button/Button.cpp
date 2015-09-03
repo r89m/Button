@@ -8,6 +8,13 @@
 #include "Button.h"
 #include "ButtonEventCallback.h"
 
+Button::Button(){
+	
+	// Initialise variables
+	_button_pressed_timestamp = 0;
+	_is_pressed = 0;
+}
+
 void Button::_button_pressed(){
 	
 	// Set the button pressed state to true
@@ -32,21 +39,21 @@ void Button::_button_released(){
 	// Set the button pressed state to false
 	_is_pressed = false;
 	
-	_execute_callbacks();
+	_execute_callbacks(true);
 }
 
 void Button::_button_held(){
 	
-	_execute_callbacks();
+	_execute_callbacks(false);
 }
 
-void Button::_execute_callbacks(){
+void Button::_execute_callbacks(boolean release_event){
 	
 	uint16_t button_time_elapsed = _button_time_elapsed();
 	
 	// Iterate over all callbacks
 	for(uint8_t i = 0; i < MAX_CALLBACKS_PER_BUTTON - 1; i++){
-		_eventCallbacks[i].executeCallbackIfTime(button_time_elapsed, *this);
+		_eventCallbacks[i].executeCallbackIfTime(button_time_elapsed, release_event, *this);
 	}
 	
 }
@@ -56,7 +63,7 @@ uint16_t Button::_button_time_elapsed(){
 	return millis() - _button_pressed_timestamp;
 }
 
-void Button::update(){
+boolean Button::update(){
 	
 	// Record the previous and new state of the button
 	boolean _previous_button_state = isPressed();
@@ -76,9 +83,11 @@ void Button::update(){
 			// Otherwise if it has just been let go
 			_button_released();
 		}
+		return true;	// State has changed
 	// If the state hasn't changed but the button is pressed - ie it is being held
 	} else if(_new_button_state){
 		_button_held();
+		return false;	// State hasn't changed
 	}	
 }
 
