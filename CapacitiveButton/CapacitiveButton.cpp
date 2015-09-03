@@ -7,8 +7,12 @@
 
 #include "CapacitiveButton.h"
 
-CapacitiveButton::CapacitiveButton(uint8_t, uint8_t){
+CapacitiveButton::CapacitiveButton(uint8_t sendPin, uint8_t receivePin){
 	
+	// Initialise variables
+	capSense = CapacitiveSensor(sendPin, receivePin);	// Called with pins set to -1 as there is not default constructor
+	_threshold = 1000;
+	_number_of_samples = 30;
 }
 
 void CapacitiveButton::configureButton(CapacitiveButtonConfigurationCallback configurationCallback){
