@@ -104,7 +104,7 @@ A capacitive touch button utilising the MPR121 touch switch IC
 Check out the [examples!](tree/master/MPR121Button/examples)
 
 ### BasicButton (not recommended!)
-A simpple button using digitalRead() to determine the state of the button. Does not perform any kind of debouncing, so false positives and multiple calls are likely. Use PushButton instead for a simple button.
+A simple button using digitalRead() to determine the state of the button. Does not perform any kind of debouncing, so false positives and multiple calls are likely. Use PushButton instead for a simple button.
 
 This is only included so that you can get an example up-and-running quickly without needing any other dependencies.
 
