@@ -1,9 +1,90 @@
 # Arduino Button
 This library makes working with buttons easy.
 
-Easily handle button events such as ```press```, ```hold```, ```hold and repeat``` and ```release```.
+Easily handle button events such as ```onPress```, ```onHold```, ```onHoldRepeat``` and ```onRelease```. The same callback functions can be used with multiple buttons, helping to keep your code cleaner and more manageable.
 
-Swap button types whenever you want - there's currently 3 built-in types - ```PushButton```, ```CapacitiveButton``` and ```MPR121Button``` but feel free to create your own.
+Swap button types whenever you want - there's currently 3 built-in types - ```PushButton```, ```CapacitiveButton``` and ```MPR121Button``` but it is easy to create your own.
+
+## Examples
+Here's some basic examples to show you just how easy using this library is!
+
+```c++
+#include <Button.h>
+#include <ButtonEventCallback.h>
+#include <BasicButton.h>
+
+// Create an instance of BasicButton reading digital pin 5
+BasicButton button = BasicButton(5);
+
+void setup(){
+
+    // When the button is first pressed, call the function onButtonPressed
+    button.onPress(onButtonPressed);
+}
+
+void loop(){
+    // Check the state of the button
+    button.update();
+}
+
+void onButtonPressed(Button& btn){
+
+    // The button was pressed - do something!
+}
+```
+
+```c++
+#include <Button.h>
+#include <ButtonEventCallback.h>
+#include <BasicButton.h>
+
+// Create an instance of BasicButton reading digital pin 5
+BasicButton button = BasicButton(5);
+
+void setup(){
+
+    // Open up the serial port so that we can write to it
+    Serial.begin(9600);
+
+    // When the button is first pressed, call the function onButtonPressed
+    button.onPress(onButtonPressed);
+    // Once the button has been held for 1 second (1000ms) call onButtonHeld. Call it again every 0.5s (500ms) until it is let go
+    button.onHoldRepeat(1000, 500, onButtonHeld);
+    // When the button is released, call onButtonReleased
+    button.onRelease(onButtonReleased);
+}
+
+void loop(){
+    // Check the state of the button
+    button.update();
+}
+
+// btn is a reference to the button that fired the event. That means you can use the same event handler for many buttons
+void onButtonPressed(Button& btn){
+
+    Serial.println("button pressed");
+}
+
+// duration reports back how long it has been since the button was originally pressed.
+// repeatCount tells us how many times this function has been called by this button.
+void onButtonHeld(Button& btn, uint16_t duration, uint16_t repeatCount){
+
+    Serial.print("button has been held for ");
+    Serial.print(duration);
+    Serial.print(" ms; this event has been fired ");
+    Serial.print(repeatCount);
+    Serial.println(" times");
+}
+
+// duration reports back the total time that the button was held down
+void onButtonReleased(Button& btn, uint16_t duration){
+
+    Serial.print("button released after ");
+    Serial.print(duration);
+    Serial.println(" ms");
+}
+
+```
 
 ## Built-in Button Types
 
@@ -22,6 +103,11 @@ A capacitive touch button utilising the MPR121 touch switch IC
 
 Check out the [examples!](tree/master/MPR121Button/examples)
 
+### BasicButton (not recommended!)
+A simpple button using digitalRead() to determine the state of the button. Does not perform any kind of debouncing, so false positives and multiple calls are likely. Use PushButton instead for a simple button.
+
+This is only included so that you can get an example up-and-running quickly without needing any other dependencies.
+
 ## Methods
 ### ```boolean update()```
 Update the button state - this will call any callbacks that are necessary. Returns ```true``` if the state changes.
@@ -32,6 +118,24 @@ Return whether or not the button is the same as the ```btn``` passed
 ### ```boolean isPressed()```
 Return whether or not the button is currently pressed.
 
+### ```void configureButton(configureButtonCallback)```
+Allows the underlying button object to be configured on a per-button basis. Useful if you want to tinker with low-level features of the button interface; eg. Bounce2 or CapacitiveSensor.
+
+```configureButtonCallback``` is a function which takes one parameter, the type of which depends on the type of button being configured - see below:
+
+```c++
+void configureBounce2ButtonCallback(Bounce& bounceButton){
+  // You can now access the underlying Bounce object, and use all the methods provided
+  // ie
+  bounceButton.setInterval(20); // Set the debouncing interval
+}
+
+void configureCapacitiveSensorButtonCallback(CapacitiveSensor& capacitiveButton){
+  // You can now access the underlying CapacitiveSensor object, and use all the methods provided
+  // ie
+  capacitiveButton.set_CS_AutocaL_Millis(0xFFFFFFFF); // Turn off auto-calibrate
+}
+```
 
 ## Callbacks
 ### ```CallbackAttachedResponse onPress(onPressCallbackFunction)```
@@ -105,4 +209,4 @@ void callThisFunctionOnHoldAndRepeat(Button& btn, uint16_t duration, uint8_t rep
 ## Constants
 
 ### ```MAX_CALLBACKS_PER_BUTTON (default=3)```
-Defines the maximum number of callbacks per button. Increasing this number will allow more callbacks but will use marginally more memory and processing power.
+Defines the maximum number of callbacks per button. Increasing this number will allow more callbacks but will use marginally more memory and processing power. This can be changed on a sketch by sketch basis, simply define ```#MAX_CALLBACKS_PER_BUTTON``` before your ```#include```s.
