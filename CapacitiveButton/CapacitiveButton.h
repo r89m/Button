@@ -18,7 +18,7 @@ typedef void (*CapacitiveButtonConfigurationCallback)(CapacitiveSensor&);
 class CapacitiveButton : public Button {
 	
 	private:
-	CapacitiveSensor capSense;
+	CapacitiveSensor capSense = CapacitiveSensor(-1, -1);
 	long _threshold;
 	long _number_of_samples;
 	
