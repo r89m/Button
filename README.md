@@ -91,17 +91,17 @@ void onButtonReleased(Button& btn, uint16_t duration){
 ### PushButton
 A simple push button debounced using the Bounce library
 
-Check out the [examples!](tree/master/PushButton/examples)
+Check out the [examples!](PushButton/examples)
 
 ### CapacitiveButton
 A capacitive touch button utilising the CapSense library
 
-Check out the [examples!](tree/master/CapacitiveButton/examples)
+Check out the [examples!](CapacitiveButton/examples)
 
 ### MPR121Button
 A capacitive touch button utilising the MPR121 touch switch IC
 
-Check out the [examples!](tree/master/MPR121Button/examples)
+Check out the [examples!](MPR121Button/examples)
 
 ### BasicButton (not recommended!)
 A simple button using digitalRead() to determine the state of the button. Does not perform any kind of debouncing, so false positives and multiple calls are likely. Use PushButton instead for a simple button.
