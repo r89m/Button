@@ -1,0 +1,4 @@
+MPR121ProximityButton	KEYWORD1
+setThresholds KEYWORD2
+setThresholdsRaw  KEYWORD2
+setRefreshDelay KEYWORD2
