@@ -4,8 +4,9 @@
   "description": "Handle different types of buttons and button events easily (touch, capacitive, push)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/shaggythesheep/arduino-button"
+    "url": "https://github.com/r89m/arduino-button.git"
   },
+  "version": "1.0.0",
   "include": "*/*.[ch]*",
   "examples": "*/examples/*/*.ino",
   "frameworks": "arduino",
