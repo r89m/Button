@@ -1,7 +1,8 @@
-#Arduino Button Library v1.0.0
+#Arduino Button Library v2.0.0
 https://github.com/shaggythesheep/arduino-button
-LICENSE file
-Richard Miles October 2015
+
+
+Richard Miles April 2016
 
 ![CC BY-SA](http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png)
 ##CC BY-SA

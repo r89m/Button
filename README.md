@@ -3,7 +3,7 @@ This library makes working with buttons easy.
 
 Easily handle button events such as ```onPress```, ```onHold```, ```onHoldRepeat``` and ```onRelease```. The same callback functions can be used with multiple buttons, helping to keep your code cleaner and more manageable.
 
-Swap button types whenever you want - there's currently 3 built-in types - ```PushButton```, ```CapacitiveButton``` and ```MPR121Button``` but it is easy to create your own.
+Swap button types whenever you want - there's currently 3 supported types - [```PushButton```](https://github.com/r89m/arduino-button-pushbutton), [```CapacitiveButton```](https://github.com/r89m/arduino-button-capacitivebutton) and [```MPR121Button```](https://github.com/r89m/arduino-button-MPR121button) but it is easy to create your own.
 
 ## Examples
 Here's some basic examples to show you just how easy using this library is!
@@ -88,20 +88,20 @@ void onButtonReleased(Button& btn, uint16_t duration){
 
 ## Built-in Button Types
 
-### PushButton
+### [PushButton](https://github.com/r89m/arduino-button-pushbutton)
 A simple push button debounced using the Bounce library
 
-Check out the [examples!](PushButton/examples)
+Check out the [examples!](https://github.com/r89m/arduino-button-pushbutton/tree/master/examples)
 
-### CapacitiveButton
+### [CapacitiveButton](https://github.com/r89m/arduino-button-capacitivebutton)
 A capacitive touch button utilising the CapSense library
 
-Check out the [examples!](CapacitiveButton/examples)
+Check out the [examples!](https://github.com/r89m/arduino-button-capacitivebutton/tree/master/examples)
 
-### MPR121Button
+### [MPR121Button](https://github.com/r89m/arduino-button-MPR121button)
 A capacitive touch button utilising the MPR121 touch switch IC
 
-Check out the [examples!](MPR121Button/examples)
+Check out the [examples!](https://github.com/r89m/arduino-button-MPR121button/tree/master/examples)
 
 ### BasicButton (not recommended!)
 A simple button using digitalRead() to determine the state of the button. Does not perform any kind of debouncing, so false positives and multiple calls are likely. Use PushButton instead for a simple button.
@@ -117,25 +117,6 @@ Return whether or not the button is the same as the ```btn``` passed
 
 ### ```boolean isPressed()```
 Return whether or not the button is currently pressed.
-
-### ```void configureButton(configureButtonCallback)```
-Allows the underlying button object to be configured on a per-button basis. Useful if you want to tinker with low-level features of the button interface; eg. Bounce2 or CapacitiveSensor.
-
-```configureButtonCallback``` is a function which takes one parameter, the type of which depends on the type of button being configured - see below:
-
-```c++
-void configureBounce2ButtonCallback(Bounce& bounceButton){
-  // You can now access the underlying Bounce object, and use all the methods provided
-  // ie
-  bounceButton.setInterval(20); // Set the debouncing interval
-}
-
-void configureCapacitiveSensorButtonCallback(CapacitiveSensor& capacitiveButton){
-  // You can now access the underlying CapacitiveSensor object, and use all the methods provided
-  // ie
-  capacitiveButton.set_CS_AutocaL_Millis(0xFFFFFFFF); // Turn off auto-calibrate
-}
-```
 
 ## Callbacks
 ### ```CallbackAttachedResponse onPress(onPressCallbackFunction)```

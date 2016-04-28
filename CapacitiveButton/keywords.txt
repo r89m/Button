@@ -1,4 +1,0 @@
-CapacitiveButton	KEYWORD1
-configureButton	KEYWORD2
-setNumberOfSamples	KEYWORD2
-setThreshold  KEYWORD2
