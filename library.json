@@ -2,6 +2,9 @@
   "name": "Buttons",
   "keywords": "button",
   "description": "Handle different types of buttons and button events easily (touch, capacitive, push)",
+  "authors":[
+    "Richard Miles"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/r89m/arduino-button.git"
