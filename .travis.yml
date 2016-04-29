@@ -36,7 +36,7 @@ install:
   # - gcov --version
       
   # Install Libraries
-   - ln -s ${TRAVIS_BUILD_DIR} /usr/local/share/arduino/libraries/Buttons
+  - install_repo_as_library
   
 script:
   # Run tests
@@ -48,8 +48,6 @@ script:
   
   # Check that examples compile
   - build_examples
-  # - arduino --verify ${TRAVIS_BUILD_DIR}/examples/BasicMQTTSwitch/BasicMQTTSwitch.ino
-  # - arduino --verify ${TRAVIS_BUILD_DIR}/examples/RemoteAndLocalSwitching/RemoteAndLocalSwitching.ino
   
 notifications:
   email:
