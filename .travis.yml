@@ -22,9 +22,9 @@ before_install:
   
   # Get travis-scripts
   - git clone https://github.com/r89m/travis-scripts.git
+  - source $TRAVIS_BUILD_DIR/travis-scripts/arduino.sh
 
   # Setup Arduino Environment
-  - source $TRAVIS_BUILD_DIR/travis-scripts/arduino.sh
   - setup_env
   
   # Install coveralls
@@ -47,7 +47,6 @@ script:
   # - coveralls --exclude tests/ --exclude examples/ --gcov-options '\-lp'
   
   # Check that examples compile
-  - source $TRAVIS_BUILD_DIR/travis-scripts/arduino.sh
   - build_examples
   # - arduino --verify ${TRAVIS_BUILD_DIR}/examples/BasicMQTTSwitch/BasicMQTTSwitch.ino
   # - arduino --verify ${TRAVIS_BUILD_DIR}/examples/RemoteAndLocalSwitching/RemoteAndLocalSwitching.ino
