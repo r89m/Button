@@ -21,7 +21,7 @@ before_install:
   # - sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-4.8 90
   
   # Get travis-scripts
-  git clone https://github.com/r89m/travis-scripts.git
+  - git clone https://github.com/r89m/travis-scripts.git
   
     
   # Arduino requires an X server even with command line
@@ -56,7 +56,7 @@ script:
   # - coveralls --exclude tests/ --exclude examples/ --gcov-options '\-lp'
   
   # Check that examples compile
-  source $TRAVIS_BUILD_DIR/travis-scripts/arduino.sh
+  - source $TRAVIS_BUILD_DIR/travis-scripts/arduino.sh
   - build_examples
   # - arduino --verify ${TRAVIS_BUILD_DIR}/examples/BasicMQTTSwitch/BasicMQTTSwitch.ino
   # - arduino --verify ${TRAVIS_BUILD_DIR}/examples/RemoteAndLocalSwitching/RemoteAndLocalSwitching.ino
