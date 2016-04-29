@@ -1,0 +1,63 @@
+# Travis.yml
+# Shamelessly stolen from: https://github.com/rlogiacco/MicroDebug/blob/master/.travis.yml
+# and from https://github.com/tzapu/WiFiManager/blob/master/.travis.yml via the blog post at:
+# https://tzapu.com/automate-arduino-ide-esp8266-build-testing-travisci/
+
+language: cpp
+
+sudo: required
+
+addons:
+    apt:
+        sources:
+            # - ubuntu-toolchain-r-test
+        packages:
+            # - gcc-4.8
+            # - g++-4.8
+
+before_install:
+  # Setup Test Environment
+  # - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
+  # - sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-4.8 90
+    
+  # Arduino requires an X server even with command line
+  # https://github.com/arduino/Arduino/issues/1981
+  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :1 -ac -screen 0 1280x1024x16"
+  - sleep 3
+  - export DISPLAY=:1.0
+
+  # Install the Arduino IDE
+  - wget http://downloads.arduino.cc/arduino-1.6.5-linux64.tar.xz
+  - tar xf arduino-1.6.5-linux64.tar.xz
+  - sudo mv arduino-1.6.5 /usr/local/share/arduino
+  - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
+  
+  # Install coveralls
+  # - pip install --user cpp-coveralls
+  
+install:
+  # Check versions
+  # - g++ --version
+  # - gcov --version
+      
+  # Install Libraries
+   - ln -s ${TRAVIS_BUILD_DIR} /usr/local/share/arduino/libraries/Buttons
+  
+script:
+  # Run tests
+  # - cd ${TRAVIS_BUILD_DIR}
+  # - make test
+  
+  # Upload code coverage report
+  # - coveralls --exclude tests/ --exclude examples/ --gcov-options '\-lp'
+  
+  # Check that examples compile
+  - source https://raw.githubusercontent.com/r89m/travis-scripts/master/arduino.sh
+  - build_examples
+  # - arduino --verify ${TRAVIS_BUILD_DIR}/examples/BasicMQTTSwitch/BasicMQTTSwitch.ino
+  # - arduino --verify ${TRAVIS_BUILD_DIR}/examples/RemoteAndLocalSwitching/RemoteAndLocalSwitching.ino
+  
+notifications:
+  email:
+    on_success: change
+    on_failure: change
