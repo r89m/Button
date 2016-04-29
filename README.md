@@ -1,9 +1,12 @@
-# Arduino Button
+# Arduino Buttons
 This library makes working with buttons easy.
 
 Easily handle button events such as ```onPress```, ```onHold```, ```onHoldRepeat``` and ```onRelease```. The same callback functions can be used with multiple buttons, helping to keep your code cleaner and more manageable.
 
-Swap button types whenever you want - there's currently 3 supported types - [```PushButton```](https://github.com/r89m/arduino-button-pushbutton), [```CapacitiveButton```](https://github.com/r89m/arduino-button-capacitivebutton) and [```MPR121Button```](https://github.com/r89m/arduino-button-MPR121button) but it is easy to create your own.
+Swap button types whenever you want - there's currently 3 supported types - 
+[```PushButton```](https://github.com/r89m/PushButton), 
+[```CapacitiveButton```](https://github.com/r89m/CapacitiveButton) and 
+[```MPR121Button```](https://github.com/r89m/MPR121Button) but it is easy to create your own.
 
 ## Examples
 Here's some basic examples to show you just how easy using this library is!
@@ -88,20 +91,20 @@ void onButtonReleased(Button& btn, uint16_t duration){
 
 ## Built-in Button Types
 
-### [PushButton](https://github.com/r89m/arduino-button-pushbutton)
+### [PushButton](https://github.com/r89m/PushButton)
 A simple push button debounced using the Bounce library
 
-Check out the [examples!](https://github.com/r89m/arduino-button-pushbutton/tree/master/examples)
+Check out the [examples!](https://github.com/r89m/PushButton/tree/master/examples)
 
-### [CapacitiveButton](https://github.com/r89m/arduino-button-capacitivebutton)
+### [CapacitiveButton](https://github.com/r89m/CapacitiveButton)
 A capacitive touch button utilising the CapSense library
 
-Check out the [examples!](https://github.com/r89m/arduino-button-capacitivebutton/tree/master/examples)
+Check out the [examples!](https://github.com/r89m/CapacitiveButton/tree/master/examples)
 
-### [MPR121Button](https://github.com/r89m/arduino-button-MPR121button)
+### [MPR121Button](https://github.com/r89m/MPR121Button)
 A capacitive touch button utilising the MPR121 touch switch IC
 
-Check out the [examples!](https://github.com/r89m/arduino-button-MPR121button/tree/master/examples)
+Check out the [examples!](https://github.com/r89m/MPR121Button/tree/master/examples)
 
 ### BasicButton (not recommended!)
 A simple button using digitalRead() to determine the state of the button. Does not perform any kind of debouncing, so false positives and multiple calls are likely. Use PushButton instead for a simple button.
