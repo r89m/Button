@@ -1,6 +1,0 @@
-update	KEYWORD2
-isPressed	KEYWORD2
-onPress	KEYWORD2
-onRelease	KEYWORD2
-onHold	KEYWORD2
-onHoldRepeat	KEYWORD2
