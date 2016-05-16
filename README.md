@@ -1,4 +1,4 @@
-# Arduino Buttons
+# r89m Buttons
 This library makes working with buttons easy.
 
 Easily handle button events such as ```onPress```, ```onHold```, ```onHoldRepeat``` and ```onRelease```. The same callback functions can be used with multiple buttons, helping to keep your code cleaner and more manageable.
