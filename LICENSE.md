@@ -1,5 +1,5 @@
 #r89m Buttons Library v2.0.0
-https://github.com/shaggythesheep/arduino-button
+https://github.com/r89m/Button
 
 
 Richard Miles April 2016
