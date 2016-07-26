@@ -96,6 +96,16 @@ void Button::onPress(ButtonOnPressCallback callback){
 	_on_press_callback = callback;
 }
 
+void Button::setMetadata(METADATA_DATA_TYPE new_metadata){
+	
+	_metadata = new_metadata;
+}
+
+METADATA_DATA_TYPE Button::getMetadata(){
+	
+	return _metadata;
+}
+
 CallbackAttachedResponse Button::onRelease(ButtonOnEventCallback callback){
 	
 	return onRelease(0, callback);

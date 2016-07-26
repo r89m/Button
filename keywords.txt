@@ -6,4 +6,6 @@ onHoldRepeat	KEYWORD2
 onPress	KEYWORD2
 onRelease	KEYWORD2
 update	KEYWORD2
+setMetadata	KEYWORD2
+getMetadata	KEYWORD2
 BasicButton	KEYWORD1

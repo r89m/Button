@@ -18,6 +18,8 @@
 
 // The maximum number of callbacks available to each button. A higher number will use more memory and be (slightly) slower
 #define MAX_CALLBACKS_PER_BUTTON 3
+// The data type used to store metadata. Defaults to byte to minmise memory usage
+#define METADATA_DATA_TYPE uint8_t	
 
 // Forward reference
 class Button;
@@ -47,6 +49,7 @@ class Button{
 		uint16_t _button_time_elapsed();
 		void _execute_callbacks(boolean);
 		ButtonEventCallback* getNextAvailableCallback();
+		METADATA_DATA_TYPE _metadata;
 		
 	protected:
 		virtual boolean _update_button_state()=0;
@@ -63,6 +66,8 @@ class Button{
 		boolean update();
 		boolean is(Button&);
 		boolean isPressed();
+		void setMetadata(METADATA_DATA_TYPE);
+		METADATA_DATA_TYPE getMetadata();
 };
   
 #endif /* BUTTON_H_ */

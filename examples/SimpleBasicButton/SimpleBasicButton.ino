@@ -24,6 +24,8 @@ void setup(){
     button.onHoldRepeat(1000, 500, onButtonHeld);
     // When the button is released, call onButtonReleased
     button.onRelease(onButtonReleased);
+    // Set the button's metadata
+    button.setMetadata(4);
 }
 
 void loop(){
@@ -35,6 +37,8 @@ void loop(){
 void onButtonPressed(Button& btn){
 
     Serial.println("button pressed");
+    Serial.print("Button metadata: ");
+    Serial.println(btn.getMetadata());
 }
 
 // duration reports back how long it has been since the button was originally pressed.
@@ -46,6 +50,8 @@ void onButtonHeld(Button& btn, uint16_t duration, uint16_t repeatCount){
     Serial.print(" ms; this event has been fired ");
     Serial.print(repeatCount);
     Serial.println(" times");
+    Serial.print("Button metadata: ");
+    Serial.println(btn.getMetadata());
 }
 
 // duration reports back the total time that the button was held down
@@ -54,4 +60,6 @@ void onButtonReleased(Button& btn, uint16_t duration){
     Serial.print("button released after ");
     Serial.print(duration);
     Serial.println(" ms");
+    Serial.print("Button metadata: ");
+    Serial.println(btn.getMetadata());
 }
