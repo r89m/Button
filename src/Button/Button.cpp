@@ -88,7 +88,8 @@ boolean Button::update(){
 	} else if(_new_button_state){
 		_button_held();
 		return false;	// State hasn't changed
-	}	
+	}
+	return -1;
 }
 
 void Button::onPress(ButtonOnPressCallback callback){
