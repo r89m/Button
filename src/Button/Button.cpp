@@ -87,9 +87,8 @@ boolean Button::update(){
 	// If the state hasn't changed but the button is pressed - ie it is being held
 	} else if(_new_button_state){
 		_button_held();
-		return false;	// State hasn't changed
 	}
-	return -1;
+	return false;	// State hasn't changed
 }
 
 void Button::onPress(ButtonOnPressCallback callback){
